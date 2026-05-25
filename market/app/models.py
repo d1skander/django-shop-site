@@ -14,6 +14,7 @@ class ProductModel(models.Model):
     data = models.DateField(auto_now=True)
     price = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100000)])
     text = models.TextField(max_length=400, validators=[MinLengthValidator(3)])
+    img = models.ImageField(upload_to="/app/images/products")
 
 
     def __str__(self):
