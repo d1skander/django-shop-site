@@ -1,0 +1,1 @@
+Запуск приложения "uv run market/manage.py runserver"
