@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import UserModel
+from .models import UserModel, ProductModel
 from .forms import UserForm
 
 
@@ -7,7 +7,8 @@ import bcrypt
 
 
 def main(request):
-    return render(request, "main.html")
+    products = ProductModel.objects.all()
+    return render(request, "main.html", {"products": products})
 
 
 def goods(request):
