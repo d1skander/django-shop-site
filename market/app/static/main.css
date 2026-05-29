@@ -1,0 +1,195 @@
+/* --- Сброс стилей и глобальные настройки в стиле Киберпанк --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Consolas', 'Courier New', monospace; /* Футуристичный моноширинный шрифт */
+    background-color: #0a0a12; /* Глубокий темный фон */
+    color: #00ffcc; /* Основной неоновый текст (бирюзовый) */
+    line-height: 1.6;
+    padding-bottom: 40px;
+}
+
+/* --- Навигационная панель (Хедер) --- */
+#panel {
+    background-color: #121225;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    border-bottom: 3px solid #ff0055; /* Розовая неоновая черта */
+    box-shadow: 0 0 20px rgba(255, 0, 85, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+#panel a {
+    text-decoration: none;
+    color: #00ffcc;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    padding: 10px 20px;
+    border: 1px solid #00ffcc;
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 85% 100%, 0 100%); /* Срезанный футуристичный угол */
+    transition: all 0.3s ease;
+}
+
+#panel a:hover {
+    background-color: #00ffcc;
+    color: #0a0a12;
+    box-shadow: 0 0 15px #00ffcc;
+}
+
+#profile {
+    margin-left: auto;
+    border-color: #ff0055 !important;
+    color: #ff0055 !important;
+}
+
+#profile:hover {
+    background-color: #ff0055 !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 15px #ff0055 !important;
+}
+
+/* --- Контейнер и Сетка товаров --- */
+#products {
+    max-width: 1300px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+#products ul {
+    list-style: none;
+    display: grid;
+    /* Оптимальный фиксированный размер колонок для правильного отображения карточек */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+/* --- Карточка товара --- */
+#product {
+    background-color: #121225;
+    border: 2px solid #00ffcc;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    clip-path: polygon(0 0, 92% 0, 100% 8%, 100% 100%, 0 100%); /* Киберпанк-срез на карточке */
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+#product:hover {
+    transform: translateY(-5px);
+    border-color: #ff0055;
+    box-shadow: 0 0 25px rgba(255, 0, 85, 0.4);
+}
+
+/* --- Нормализация размера изображений товаров --- */
+/* --- Исправленный блок изображения товара --- */
+#product img {
+    width: 100%;             /* Картинка подстраивается под ширину карточки */
+    height: 250px;           /* Фиксированная высота, чтобы сетка была ровной */
+    
+    /* Магия сжатия: */
+    object-fit: contain;     /* Картинка пропорционально уменьшается и полностью помещается внутрь, без обрезки */
+    object-position: center; /* Центрирует изображение, если по бокам остаются пустые поля */
+    
+    background-color: #06060c; /* Темная подложка, чтобы пустые поля вокруг картинки сливались с карточкой */
+    border: 1px solid rgba(0, 255, 204, 0.2);
+    border-radius: 4px;
+    margin-bottom: 15px;
+    transition: filter 0.3s ease;
+}
+
+
+#product:hover img {
+    filter: brightness(1.2) contrast(1.1); /* Эффект подсветки при наведении */
+}
+
+/* Дата/дополнительные данные ({{ i.data }}) */
+#product {
+    font-size: 0.85rem;
+    color: #ff0055;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 15px;
+    text-align: right;
+}
+
+/* --- Описание товара (details / summary) --- */
+details {
+    background-color: #1a1a3a;
+    border-left: 3px solid #ff0055;
+    margin: 15px 0 5px 0;
+    padding: 10px;
+}
+
+summary {
+    cursor: pointer;
+    font-weight: bold;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    outline: none;
+    user-select: none;
+}
+
+summary:hover {
+    color: #ff0055;
+}
+
+details[open] summary {
+    margin-bottom: 10px;
+    border-bottom: 1px dashed rgba(255, 0, 85, 0.5);
+    padding-bottom: 5px;
+}
+
+details p, details {
+    color: #e0e0ff; /* Читаемый светлый текст внутри описания */
+    font-size: 0.9rem;
+}
+
+/* --- Адаптивность для мобильных телефонов --- */
+@media (max-width: 650px) {
+    #panel {
+        flex-direction: column;
+        gap: 12px;
+        padding: 15px;
+    }
+
+    #panel a {
+        width: 100%;
+        text-align: center;
+        font-size: 0.85rem;
+        clip-path: none; /* Упрощаем геометрию для мелких кнопок телефона */
+    }
+
+    #profile {
+        margin-left: 0;
+    }
+
+    #products {
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+
+    #products ul {
+        /* На смартфонах один товар занимает всю ширину экрана */
+        grid-template-columns: 1fr; 
+        gap: 20px;
+    }
+    
+    #product img {
+        /* Уменьшаем высоту картинок на экранах мобильных, чтобы не прокручивать бесконечно */
+        height: 200px; 
+    }
+}

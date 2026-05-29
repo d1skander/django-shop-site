@@ -1,0 +1,148 @@
+/* --- Сброс стилей и глобальные настройки в стиле Киберпанк --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Consolas', 'Courier New', monospace;
+    background-color: #0a0a12; /* Глубокий темный фон */
+    color: #00ffcc; /* Основной неоновый бирюзовый текст */
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Центрирует форму строго по центру экрана */
+    padding: 20px;
+}
+
+/* --- Контейнер формы --- */
+form {
+    background-color: #121225;
+    border: 2px solid #00ffcc;
+    padding: 40px 30px;
+    width: 100%;
+    max-width: 400px; /* Оптимальная ширина для ПК и мобильных */
+    clip-path: polygon(0 0, 90% 0, 100% 10%, 100% 100%, 0 100%); /* Киберпанк-срез угла */
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.15);
+    transition: box-shadow 0.3s ease;
+}
+
+form:hover {
+    box-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
+}
+
+/* Стилизация заголовка, если вы решите добавить его внутрь body или form */
+h1, title-auth {
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #ff0055;
+    margin-bottom: 25px;
+    text-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+}
+
+/* --- Стилизация таблицы Django {{ form }} --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+}
+
+tr {
+    display: flex;
+    flex-direction: column; /* Элементы формы встают друг под друга */
+    margin-bottom: 20px;
+}
+
+/* Метки полей (Username, Password и т.д.) */
+td label {
+    display: block;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #ff0055; /* Розовый неон для акцентов */
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+/* Сами поля ввода (генерируются через {{ form }}) */
+td input[type="text"],
+td input[type="password"],
+td input[type="email"],
+form input:not([type="submit"]) {
+    width: 100%;
+    padding: 12px;
+    background-color: #0a0a12;
+    border: 1px solid #00ffcc;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+/* Состояние фокуса полей ввода */
+td input:focus,
+form input:not([type="submit"]):focus {
+    border-color: #ff0055;
+    box-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+    background-color: #16162a;
+}
+
+/* Скрытие лишних ячеек таблицы для сохранения структуры */
+td {
+    display: block;
+    width: 100%;
+}
+
+/* --- Киберпанк кнопка «Войти» --- */
+input[type="submit"] {
+    width: 100%;
+    background-color: transparent;
+    color: #00ffcc;
+    border: 2px solid #00ffcc;
+    padding: 14px;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    clip-path: polygon(0 0, 100% 0, 100% 75%, 90% 100%, 0 100%); /* Футуристичный срез кнопки */
+    transition: all 0.3s ease;
+    letter-spacing: 2px;
+}
+
+input[type="submit"]:hover {
+    background-color: #00ffcc;
+    color: #0a0a12;
+    box-shadow: 0 0 20px #00ffcc;
+}
+
+input[type="submit"]:active {
+    transform: scale(0.98);
+}
+
+/* --- Текст ошибок Django (если введены неверные данные) --- */
+.errorlist {
+    list-style: none;
+    color: #ff3333;
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: rgba(255, 51, 51, 0.1);
+    border-left: 3px solid #ff3333;
+}
+
+/* --- Адаптивность для мобильных экранов --- */
+@media (max-width: 480px) {
+    form {
+        padding: 25px 20px;
+        clip-path: none; /* Убираем сложные срезы на мелких экранах для экономии места */
+    }
+    
+    input[type="submit"] {
+        clip-path: none;
+    }
+}

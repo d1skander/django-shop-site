@@ -27,7 +27,8 @@ urlpatterns = [
     path("goods/", views.goods),
     path("company/", views.company),
     path("basket/", views.basket),
-    path("user/", views.user)
+    path("user/", views.user),
+    path("auth/", views.auth)
 ]
 
 
