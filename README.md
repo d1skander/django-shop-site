@@ -1,1 +1,1 @@
-Запуск приложения "uv run market/manage.py runserver"
+Запуск приложения "uv run market/manage.py runserver"# django-shop-site
