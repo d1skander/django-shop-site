@@ -2,18 +2,26 @@ from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator, MinLengthValidator
 
 
+import uuid
+
+
 class UserModel(models.Model):
-    id = models.IntegerField(default=None, primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = models.CharField(max_length=20, unique=True, validators=[MinLengthValidator(3)])
     email = models.EmailField(unique=True, validators=[MinLengthValidator(3)])
-    password = models.CharField(max_length=20)
-    avatar = models.ImageField(upload_to="/avatars")
+    password = models.CharField()
+    avatar = models.ImageField(upload_to="avatars/")
+
+    def delete_user(self, *args, **kwargs):
+        self.avatar.file.delete()
+        super(UserModel, self).delete(*args, **kwargs)
 
 
 class ProductModel(models.Model):
-    id = models.IntegerField(default=None, primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     data = models.DateField(auto_now=True)
     price = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100000)])
     text = models.TextField(max_length=400, validators=[MinLengthValidator(3)])
     img = models.ImageField(upload_to="products/")
+    quantity = models.IntegerField(default=0)
     tags = models.CharField(max_length=100, unique=True, validators=[MinLengthValidator(2)])

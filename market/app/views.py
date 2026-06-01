@@ -31,13 +31,14 @@ def company(request):
 
 
 def user(request):
-    userform = UserForm()
+    userform = UserForm(request.POST, request.FILES)
     if request.method == "POST":
         username = request.POST.get("username")
         email = request.POST.get("email")
         password = request.POST.get("password")
-        avatar = request.POST.get("avatars")
-        password_hash = bcrypt.hashpw(str(password).encode("utf-8"), bcrypt.gensalt())
+        avatar = request.POST.get("avatar")
+        password_str = str(password)
+        password_hash = bcrypt.hashpw(password_str.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
         user = UserModel(username=username, email=email, password=password_hash, avatar=avatar)
         user.save()
         return redirect("/main")
@@ -52,8 +53,8 @@ def auth(request):
         password_encode = str(password_request).encode("utf-8")
         try:
             username = UserModel.objects.get(username=username_request)
-            password = username.password
-            hash_password = bcrypt.checkpw(password_encode, password.encode("utf-8"))
+            password = str(username.password).encode("utf-8")
+            hash_password = bcrypt.checkpw(password_encode, password)
             if hash_password:
                 request.session["username"] = username.username
                 return redirect("/main")
@@ -67,16 +68,18 @@ def auth(request):
 def profile(request):
     if "username" in request.session:
         user = request.session["username"]
-        return render(request, "profile.html", {"user": user})
+        profile = UserModel.objects.get(username=user)
+        return render(request, "profile.html", {"user": user, "profile": profile})
+    else:
+        return redirect("/auth")
     
 
 def exit_profile(request):
     if "username" in request.session:
-        user = request.session["username"]
         try:
             del request.session["username"]
         except KeyError:
-            pass
+            return HttpResponse(f"{KeyError}", status=400)
         return redirect("/main")
     return redirect("/main")
     
@@ -84,7 +87,7 @@ def exit_profile(request):
 def delete_profile(request):
     if "username" in request.session:
         user = request.session["username"]
-        user_model = UserModel.objects.filter(username=user)
-        user_model.delete()
+        user_model = UserModel.objects.get(username=user)
+        user_model.delete_user()
         return redirect("/main")
     return redirect("/main")

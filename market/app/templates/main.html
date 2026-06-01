@@ -25,9 +25,12 @@
             <img src="{{ i.img.url }}">
             <details>
                 <summary>О товаре</summary>
+                <p>Количество:</p><p>{{ i.quantity }}</p>
                 {{ i.text }}
-                <p>Теги:</p>
-                <p>{{ i.tags }}</p>
+                <p>Теги:</p><p>{{ i.tags }}</p>
+                <form method="post" action="/buy_goods">
+                    <button id="buy_button" type="submit">Купить</button>
+                </form>
             </details>
             {{ i.data }}
         </div>
