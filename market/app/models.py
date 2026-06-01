@@ -7,6 +7,7 @@ class UserModel(models.Model):
     username = models.CharField(max_length=20, unique=True, validators=[MinLengthValidator(3)])
     email = models.EmailField(unique=True, validators=[MinLengthValidator(3)])
     password = models.CharField(max_length=20)
+    avatar = models.ImageField(upload_to="/avatars")
 
 
 class ProductModel(models.Model):
@@ -16,7 +17,3 @@ class ProductModel(models.Model):
     text = models.TextField(max_length=400, validators=[MinLengthValidator(3)])
     img = models.ImageField(upload_to="products/")
     tags = models.CharField(max_length=100, unique=True, validators=[MinLengthValidator(2)])
-
-
-    def __str__(self):
-        return str(self.data)
