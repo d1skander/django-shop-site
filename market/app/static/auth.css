@@ -146,3 +146,33 @@ input[type="submit"]:active {
         clip-path: none;
     }
 }
+
+
+#auth {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: inline-block;
+    padding: 6px 12px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: 1px;
+    color: #00ffcc;
+    background-color: #121225;
+    border: 1px solid #00ffcc;
+    clip-path: polygon(0 0, 100% 0, 100% 70%, 85% 100%, 0 100%);
+    transition: all 0.3s ease;
+}
+
+#auth:hover {
+    background-color: #00ffcc;
+    color: #0a0a12;
+    box-shadow: 0 0 10px #00ffcc;
+}
+
+#auth:active {
+    transform: scale(0.95);
+}

@@ -28,7 +28,10 @@ urlpatterns = [
     path("company/", views.company),
     path("basket/", views.basket),
     path("user/", views.user),
-    path("auth/", views.auth)
+    path("auth/", views.auth),
+    path("profile/", views.profile),
+    path("delete_profile", views.delete_profile),
+    path("exit_profile", views.exit_profile)
 ]
 
 

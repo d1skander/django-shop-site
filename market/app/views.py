@@ -9,11 +9,13 @@ import bcrypt
 
 
 def main(request):
+    status = False
     if "username" in request.session:
         products = ProductModel.objects.all()
         user = request.session["username"]
-        return render(request, "main.html", {"products": products, "user": user})
-    return redirect("/user")
+        status = True
+        return render(request, "main.html", {"products": products, "user": user, "status": status})
+    return render(request, "main.html", {"status": status })
 
 
 def goods(request):
@@ -59,3 +61,29 @@ def auth(request):
         except ObjectDoesNotExist:
             return HttpResponse("<h1>Такого пользователя нет</h1>")
     return render(request, "auth.html", {"form": authform})
+
+
+def profile(request):
+    if "username" in request.session:
+        user = request.session["username"]
+        return render(request, "profile.html", {"user": user})
+    
+
+def exit_profile(request):
+    if "username" in request.session:
+        user = request.session["username"]
+        try:
+            del request.session["username"]
+        except KeyError:
+            pass
+        return redirect("/main")
+    return redirect("/main")
+    
+
+def delete_profile(request):
+    if "username" in request.session:
+        user = request.session["username"]
+        user_model = UserModel.objects.filter(username=user)
+        user_model.delete()
+        return redirect("/main")
+    return redirect("/main")

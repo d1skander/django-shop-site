@@ -12,7 +12,11 @@
         <a href="/goods">Товары</a>
         <a href="/basket">Корзина</a>
         <a href="/company">О нас</a>
-        <a href="/user" id="profile">{{ user }}</a>
+        {% if status %}
+            <a href="/profile" id="profile">{{ user }}</a>
+        {% else %}
+            <a href="/user" id="profile">Войти</a>
+        {% endif %}
     </div>
     <div id="products">
         <ul>
