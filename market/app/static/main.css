@@ -1,66 +1,102 @@
-/* --- Сброс стилей и глобальные настройки в стиле Киберпанк --- */
+/* Базовые стили и анимированный фон */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
-    font-family: 'Consolas', 'Courier New', monospace; /* Футуристичный моноширинный шрифт */
-    background-color: #0a0a12; /* Глубокий темный фон */
-    color: #00ffcc; /* Основной неоновый текст (бирюзовый) */
-    line-height: 1.6;
+    background: linear-gradient(-45deg, #f3f4f6, #e5e7eb, #f3f4f6);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: #1f2937;
     padding-bottom: 40px;
 }
 
-/* --- Навигационная панель (Хедер) --- */
-#panel {
-    background-color: #121225;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    padding: 20px;
-    border-bottom: 3px solid #ff0055; /* Розовая неоновая черта */
-    box-shadow: 0 0 20px rgba(255, 0, 85, 0.3);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
+/* Навигационная панель */
+#panel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    background-color: rgba(255, 0, 234, 0.76);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 15px 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* Эффект подчеркивания у ссылок при наведении */
 #panel a {
     text-decoration: none;
-    color: #00ffcc;
-    font-weight: bold;
-    text-transform: uppercase;
+    color: #4b5563;
+    font-weight: 500;
     font-size: 0.95rem;
-    padding: 10px 20px;
-    border: 1px solid #00ffcc;
-    clip-path: polygon(0 0, 100% 0, 100% 80%, 85% 100%, 0 100%); /* Срезанный футуристичный угол */
-    transition: all 0.3s ease;
+    padding: 8px 12px;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+#panel a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #4f46e5;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
 }
 
 #panel a:hover {
-    background-color: #00ffcc;
-    color: #0a0a12;
-    box-shadow: 0 0 15px #00ffcc;
+    color: #4f46e5;
 }
 
-#profile {
+#panel a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/* Кнопка профиля с пульсирующим свечением */
+#panel #profile {
     margin-left: auto;
-    border-color: #ff0055 !important;
-    color: #ff0055 !important;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: #ffffff;
+    border-radius: 20px;
+    padding: 8px 20px;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#profile:hover {
-    background-color: #ff0055 !important;
-    color: #ffffff !important;
-    box-shadow: 0 0 15px #ff0055 !important;
+#panel #profile::after {
+    display: none;
 }
 
-/* --- Контейнер и Сетка товаров --- */
+#panel #profile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5), 0 0 0 4px rgba(79, 70, 229, 0.2);
+}
+
+#panel #profile:active {
+    transform: translateY(1px);
+}
+
+/* Сетка товаров */
 #products {
-    max-width: 1300px;
+    max-width: 1200px;
     margin: 40px auto;
     padding: 0 20px;
 }
@@ -68,175 +104,161 @@ body {
 #products ul {
     list-style: none;
     display: grid;
-    /* Оптимальный фиксированный размер колонок для правильного отображения карточек */
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 30px;
 }
 
-/* --- Карточка товара --- */
-div#product {
-    background-color: #121225;
-    border: 2px solid #00ffcc;
+/* Карточка товара с 3D-эффектом приподнимания */
+#product {
+    background: #ffffff;
+    border: 1px solid rgba(229, 231, 235, 0.7);
+    border-radius: 16px;
+    overflow: hidden;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-    clip-path: polygon(0 0, 92% 0, 100% 8%, 100% 100%, 0 100%); /* Киберпанк-срез на карточке */
-    box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    color: #00ffcc; /* Защита от перетирания цвета текста */
-    font-size: 1rem;
-    text-align: left;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-div#product:hover {
-    transform: translateY(-5px);
-    border-color: #ff0055;
-    box-shadow: 0 0 25px rgba(255, 0, 85, 0.4);
+#product:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-/* --- Нормализация размера изображений товаров --- */
-div#product img {
-    width: 100%;             /* Картинка подстраивается под ширину карточки */
-    height: 250px;           /* Фиксированная высота, чтобы сетка была ровной */
-    object-fit: contain;     /* Картинка пропорционально уменьшается и полностью помещается внутрь, без обрезки */
-    object-position: center; /* Центрирует изображение, если по бокам остаются пустые поля */
-    background-color: #06060c; /* Темная подложка, чтобы пустые поля вокруг картинки сливались с карточкой */
-    border: 1px solid rgba(0, 255, 204, 0.2);
-    border-radius: 4px;
-    margin-bottom: 15px;
-    transition: filter 0.3s ease;
-}
-
-div#product:hover img {
-    filter: brightness(1.2) contrast(1.1); /* Эффект подсветки при наведении */
-}
-
-/* Исправленный блок текста даты в самом низу карточки ({{ i.data }}) */
-div#product {
-    /* Чтобы не ломать стили карточки, используем текстовый селектор для последней строки данных */
-    text-transform: uppercase;
-}
-
-/* Стилизация текста даты внутри карточки (так как она идет голым текстом после details) */
-div#product > details + text, 
-div#product {
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-}
-
-/* Обернем вывод даты в красивый стиль, добавив отступ сверху */
-div#product {
-    justify-content: flex-start;
-}
-
-/* --- Описание товара (details / summary) --- */
-details {
-    background-color: #1a1a3a;
-    border-left: 3px solid #ff0055;
-    margin: 15px 0 15px 0;
-    padding: 10px;
+/* Картинка: зум внутри контейнера */
+#product img {
     width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-summary {
+#product:hover img {
+    transform: scale(1.04);
+}
+
+/* Раскрывающийся список с анимацией плавного появления */
+#product details {
+    margin-top: auto;
+    padding: 12px 0 0 0;
+    border-top: 1px solid #f3f4f6;
+}
+
+#product summary {
+    font-weight: 600;
     cursor: pointer;
-    font-weight: bold;
-    color: #ffffff;
-    text-transform: uppercase;
-    font-size: 0.85rem;
+    color: #4b5563;
     outline: none;
-    user-select: none;
+    padding: 5px 0;
+    transition: color 0.2s ease, padding-left 0.2s ease;
 }
 
-summary:hover {
-    color: #ff0055;
+#product summary:hover {
+    color: #4f46e5;
+    padding-left: 5px;
 }
 
-details[open] summary {
+#product details[open] summary {
+    color: #111827;
     margin-bottom: 10px;
-    border-bottom: 1px dashed rgba(255, 0, 85, 0.5);
-    padding-bottom: 5px;
 }
 
-details p, details {
-    color: #e0e0ff; /* Читаемый светлый текст внутри описания */
+/* Плавное проявление контента внутри details */
+#product details p, 
+#product details form {
+    animation: fadeIn 0.4s ease-out both;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#product p {
     font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 6px;
 }
 
-/* Стили для строк "Количество" и "Теги" */
-details p {
+#product p:has(+ p) {
     display: inline-block;
+    font-weight: bold;
+    color: #111827;
     margin-right: 5px;
 }
-details p + p {
-    color: #00ffcc;
-    font-weight: bold;
-    margin-right: 15px;
-}
 
-/* --- Форма и Кнопка "Купить" --- */
-form {
-    margin-top: 15px;
-    width: 100%;
-}
-
+/* Кнопка купить с эффектом пробегающего блика (Shimmer) */
 #buy_button {
     width: 100%;
-    background-color: transparent;
-    color: #ff0055;
-    border: 2px solid #ff0055;
-    padding: 10px;
-    font-family: 'Consolas', 'Courier New', monospace;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 0.9rem;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
-    clip-path: polygon(0 0, 100% 0, 100% 75%, 90% 100%, 0 100%); /* Футуристичный срез нижнего угла кнопки */
-    transition: all 0.2s ease;
+    margin-top: 15px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+    transition: all 0.3s ease;
+}
+
+#buy_button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transform: skewX(-25deg);
 }
 
 #buy_button:hover {
-    background-color: #ff0055;
-    color: #ffffff;
-    box-shadow: 0 0 15px #ff0055;
+    background: linear-gradient(135deg, #059669, #047857);
+    box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4);
+    transform: translateY(-1px);
+}
+
+#buy_button:hover::before {
+    animation: shimmer 1.2s infinite;
+}
+
+@keyframes shimmer {
+    100% { left: 150%; }
 }
 
 #buy_button:active {
-    transform: scale(0.98);
+    transform: translateY(1px);
 }
 
-/* --- Адаптивность для мобильных телефонов --- */
-@media (max-width: 650px) {
+/* Адаптивность для смартфонов */
+@media (max-width: 576px) {
     #panel {
         flex-direction: column;
-        gap: 12px;
-        padding: 15px;
-    }
-
-    #panel a {
-        width: 100%;
+        align-items: stretch;
         text-align: center;
-        font-size: 0.85rem;
-        clip-path: none; /* Упрощаем геометрию для мелких кнопок телефона */
+        gap: 10px;
     }
-
-    #profile {
+    
+    #panel #profile {
         margin-left: 0;
     }
 
     #products {
         margin: 20px auto;
-        padding: 0 15px;
-    }
-
-    #products ul {
-        grid-template-columns: 1fr; 
-        gap: 20px;
     }
     
-    div#product img {
-        height: 200px; 
+    /* Отключение сильного зума на мобильных для производительности */
+    #product:hover {
+        transform: translateY(-4px);
+    }
+    #product:hover img {
+        transform: none;
     }
 }

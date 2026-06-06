@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'main.css' %}" />
+    <link rel="stylesheet" href="{% static 'profile.css' %}" />
 </head>
 <body>
     <div id="profile">
     <img src="{{ profile.img.url }}">
-    {{ user }}
-    {{ profile.id }}
-    {{ profile.email }}
+    <p>Name: {{ user }}</p>
+    <p>Id: {{ profile.id }}</p>
+    <p>Email: {{ profile.email }}</p>
     <form action="/delete_profile" method="post">
         {% csrf_token %}
         <button type="submit">Удалить</button>

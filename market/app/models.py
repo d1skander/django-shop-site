@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator, MinLengthValidator
+from django.contrib.postgres.fields import ArrayField
 
 
 import uuid
@@ -24,4 +25,4 @@ class ProductModel(models.Model):
     text = models.TextField(max_length=400, validators=[MinLengthValidator(3)])
     img = models.ImageField(upload_to="products/")
     quantity = models.IntegerField(default=0)
-    tags = models.CharField(max_length=100, unique=True, validators=[MinLengthValidator(2)])
+    tags = ArrayField(models.CharField(max_length=20, validators=[MinLengthValidator(2)]))
