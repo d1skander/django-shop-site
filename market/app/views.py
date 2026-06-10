@@ -23,7 +23,28 @@ def goods(request):
 
 
 def basket(request):
+    if "username" in request.session:
+        session = request.session["username"]
+        user = UserModel.objects.get(username=session)
+        baskets = user.baskets
+        for basket in baskets:
+            products = ProductModel.objects.all().filter(id=basket)
+            return render(request, "basket.html", {"products": products})
     return render(request, "basket.html")
+
+
+def basket_goods(request):
+    if request.method == "POST":
+        id_basket = request.POST.get("id_basket")
+        if "username" in request.session:
+            session = request.session["username"]
+            user = UserModel.objects.get(username=session)
+            user.baskets.append(id_basket)
+            user.save()
+            return HttpResponse(status=204)
+        return HttpResponse(status=400)
+    else:
+        return HttpResponse(status=409)
 
 
 def company(request):
@@ -33,15 +54,18 @@ def company(request):
 def user(request):
     userform = UserForm(request.POST, request.FILES)
     if request.method == "POST":
-        username = request.POST.get("username")
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        avatar = request.POST.get("avatar")
-        password_str = str(password)
-        password_hash = bcrypt.hashpw(password_str.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
-        user = UserModel(username=username, email=email, password=password_hash, avatar=avatar)
-        user.save()
-        return redirect("/main")
+        userform = UserForm(request.POST, request.FILES)
+        if userform.is_valid():
+            username = request.POST.get("username")
+            email = request.POST.get("email")
+            password = request.POST.get("password")
+            avatar = userform.cleaned_data.get("avatar")
+            password_str = str(password)
+            password_hash = bcrypt.hashpw(password_str.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+            user = UserModel(username=username, email=email, password=password_hash, avatar=avatar)
+            user.save()
+            return redirect("/main")
+        return render(request, "user.html", {"form": userform})
     return render(request, "user.html", {"form": userform})
 
 
@@ -68,8 +92,11 @@ def auth(request):
 def profile(request):
     if "username" in request.session:
         user = request.session["username"]
-        profile = UserModel.objects.get(username=user)
-        return render(request, "profile.html", {"user": user, "profile": profile})
+        try:
+            profile = UserModel.objects.get(username=user)
+            return render(request, "profile.html", {"user": user, "profile": profile})
+        except ObjectDoesNotExist:
+            return redirect("/auth")
     else:
         return redirect("/auth")
     
@@ -88,6 +115,10 @@ def delete_profile(request):
     if "username" in request.session:
         user = request.session["username"]
         user_model = UserModel.objects.get(username=user)
-        user_model.delete_user()
+        try:
+            del request.session["username"]
+        except KeyError:
+            return HttpResponse(f"{KeyError}", status=400)
+        user_model.delete()
         return redirect("/main")
     return redirect("/main")

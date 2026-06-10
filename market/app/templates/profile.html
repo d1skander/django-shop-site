@@ -7,8 +7,14 @@
     <link rel="stylesheet" href="{% static 'profile.css' %}" />
 </head>
 <body>
+    <a href="/main"><button id="return">Назад</button></a>
     <div id="profile">
-    <img src="{{ profile.img.url }}">
+    {% if profile.avatar %}
+    <img src="{{ profile.avatar.url }}">
+    {% else %}
+    <!-- Если файла нет, показываем дефолтную картинку из static или ссылку -->
+    <img src="/market/app/images/avatars/default.jpg">
+    {% endif %}
     <p>Name: {{ user }}</p>
     <p>Id: {{ profile.id }}</p>
     <p>Email: {{ profile.email }}</p>

@@ -12,9 +12,11 @@ class UserModel(models.Model):
     email = models.EmailField(unique=True, validators=[MinLengthValidator(3)])
     password = models.CharField()
     avatar = models.ImageField(upload_to="avatars/")
+    baskets = ArrayField(models.UUIDField(), editable=False, default=list)
 
-    def delete_user(self, *args, **kwargs):
-        self.avatar.file.delete()
+    def delete(self, *args, **kwargs):
+        if self.avatar:
+            self.avatar.delete(save=False)
         super(UserModel, self).delete(*args, **kwargs)
 
 
@@ -25,4 +27,10 @@ class ProductModel(models.Model):
     text = models.TextField(max_length=400, validators=[MinLengthValidator(3)])
     img = models.ImageField(upload_to="products/")
     quantity = models.IntegerField(default=0)
-    tags = ArrayField(models.CharField(max_length=20, validators=[MinLengthValidator(2)]))
+    tags = ArrayField(models.CharField(max_length=20, validators=[MinLengthValidator(2)]), default=list)
+
+
+    def delete(self, *args, **kwargs):
+        if self.img:
+            self.img.delete(save=False)
+        super(ProductModel, self).delete(*args, **kwargs)

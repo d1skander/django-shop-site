@@ -22,17 +22,23 @@
         <ul>
         {% for i in products %}
         <div id="product">
+            {% if i.img.url %}
             <img src="{{ i.img.url }}">
+            {% else %}
+            <img src="/market/app/images/products/default.jpg">
+            {% endif %}
             <details>
                 <summary>О товаре</summary>
                 <p>Количество:</p><p>{{ i.quantity }}</p>
                 {{ i.text }}
                 <p>Теги:</p><p>{{ i.tags }}</p>
                 <form method="post" action="/buy_goods">
+                    {% csrf_token %}
                     <button id="buy_button" type="submit">Купить</button>
                 </form>
-                <form method="post" action="/basket_goods">
-                    <button id="basket_button" type="submit">В корзину</button>
+                <form method="post" action="/basket_goods" onsubmit="alert('+ в корзину!')">
+                    {% csrf_token %}
+                    <button id="basket_button" type="submit" value="{{ i.id }}" name="id_basket">В корзину</button>
                 </form>
             </details>
             {{ i.data }}
