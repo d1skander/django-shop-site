@@ -6,6 +6,7 @@ from .forms import UserForm, AuthForm
 
 
 import bcrypt
+import uuid
 
 
 def main(request):
@@ -42,6 +43,24 @@ def basket_goods(request):
             user.baskets.append(id_basket)
             user.save()
             return HttpResponse(status=204)
+        return HttpResponse(status=400)
+    else:
+        return HttpResponse(status=409)
+    
+
+def basket_delete(request):
+    if request.method == "POST":
+        r_id_basket = request.POST.get("id_basket")
+        id_basket = uuid.UUID(r_id_basket)
+        if "username" in request.session:
+            session = request.session["username"]
+            user = UserModel.objects.get(username=session)
+            try:
+                user.baskets.remove(id_basket)
+                user.save()
+                return HttpResponse(status=204)
+            except ValueError:
+                return HttpResponse(status=302)
         return HttpResponse(status=400)
     else:
         return HttpResponse(status=409)

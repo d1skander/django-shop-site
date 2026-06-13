@@ -32,7 +32,8 @@ urlpatterns = [
     path("profile/", views.profile),
     path("delete_profile", views.delete_profile),
     path("exit_profile", views.exit_profile),
-    path("basket_goods", views.basket_goods)
+    path("basket_goods", views.basket_goods),
+    path("basket_delete", views.basket_delete)
 ]
 
 
