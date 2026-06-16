@@ -1,9 +1,24 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator, MinLengthValidator
 from django.contrib.postgres.fields import ArrayField
+from decimal import Decimal
+from payments import PurchasedItem
+from payments.models import BasePayment
+from typing import Iterable
 
 
 import uuid
+
+
+class Payment(BasePayment):
+    def get_failure_url(self) -> str:
+        return f"http://example.com/payments/{self.pk}/failure"
+    
+    def get_success_url(self):
+        return f"http://example.com/payments/{self.pk}/success"
+    
+    def get_purchased_items(self) -> Iterable[PurchasedItem]:
+        yield PurchasedItem()
 
 
 class UserModel(models.Model):

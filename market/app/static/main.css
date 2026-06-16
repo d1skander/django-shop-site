@@ -237,6 +237,69 @@ body {
     transform: translateY(1px);
 }
 
+
+#cookie_goods {
+    /* Сброс стилей кнопки */
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    outline: none;
+    
+    /* Выравнивание: сердце сверху, текст снизу */
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px; /* Расстояние между сердцем и текстом */
+    
+    /* Стили для текста «Понравилось» */
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #444444;
+    
+    /* Плавность всех анимаций */
+    transition: all 0.25s ease;
+}
+
+/* Создаем идеальное сердце из символа */
+#cookie_goods::before {
+    content: "❤️"; /* Настоящее текстовое сердце */
+    font-size: 34px; /* Размер лайка */
+    line-height: 1;
+    
+    /* Начальный фильтр (сделаем его чуть блеклым, пока не навели мышь) */
+    filter: grayscale(0.2) contrast(0.9);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+}
+
+/* --- КРАСИВЫЕ АНИМАЦИИ --- */
+
+/* 1. Эффект при наведении мыши */
+#cookie_goods:hover {
+    color: #e2264d; /* Текст становится ярко-красным */
+}
+
+#cookie_goods:hover::before {
+    /* Сердце становится сочным, увеличивается и пульсирует */
+    filter: grayscale(0) contrast(1.2) drop-shadow(0 4px 10px rgba(226, 38, 77, 0.4));
+    transform: scale(1.25);
+    animation: pulseLike 0.8s infinite alternate;
+}
+
+/* 2. Эффект в момент самого клика */
+#cookie_goods:active {
+    transform: scale(0.9); /* Кнопка приятно прожимается внутрь */
+}
+
+/* Анимация биения для лайка при наведении */
+@keyframes pulseLike {
+    0% { transform: scale(1.2); }
+    100% { transform: scale(1.35); }
+}
+
+
+
 /* Адаптивность для смартфонов */
 @media (max-width: 576px) {
     #panel {

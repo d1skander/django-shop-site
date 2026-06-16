@@ -9,7 +9,7 @@
 </head>
 <body>
     <div id="panel">
-        <a href="/goods">Товары</a>
+        <a href="/goods">Рекомендации</a>
         <a href="/basket">Корзина</a>
         <a href="/company">О нас</a>
         {% if status %}
@@ -39,6 +39,10 @@
                 <form method="post" action="/basket_goods" onsubmit="alert('+ в корзину!')">
                     {% csrf_token %}
                     <button id="basket_button" type="submit" value="{{ i.id }}" name="id_basket">В корзину</button>
+                </form>
+                <form method="post" action="/cookie_goods" onsubmit="alert('+ в рекомендации')">
+                    {% csrf_token %}
+                    <button id="cookie_goods" type="submit" value="{{ i.tags }}" name="tags">Понравилось</button>
                 </form>
             </details>
             {{ i.data }}

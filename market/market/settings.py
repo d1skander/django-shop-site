@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
+    'payments',
     'app'
 ]
 
@@ -134,3 +135,12 @@ STATIC_URL = 'static/'
 MEDIA_URL = "/images/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "app", "images")
+
+
+PAYMENT_HOST = str(os.getenv("DB_HOST") + os.getenv("DB_PORT"))
+
+PAYMENT_MODEL = 'app.models.Payment'
+
+PAYMENT_VARIANTS = {
+    'dummy': ('payments.dummy.DummyProvider', {})
+}

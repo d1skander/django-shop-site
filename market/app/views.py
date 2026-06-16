@@ -1,12 +1,23 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
+from django.template.response import TemplateResponse
 from .models import UserModel, ProductModel
 from .forms import UserForm, AuthForm
+from payments import get_payment_model, RedirectNeeded
 
 
 import bcrypt
 import uuid
+
+
+def payment_details(request, payment_id):
+    payment = get_object_or_404(get_payment_model(), id=payment_id)
+    try:
+        form = payment.get_form(data=request.POST or None)
+    except RedirectNeeded as redirect_to:
+        return redirect(str(redirect_to))
+    return TemplateResponse(request, 'payment.html', {"form": form, "payment": payment})
 
 
 def main(request):
@@ -20,6 +31,21 @@ def main(request):
 
 
 def goods(request):
+    if "username" in request.session:
+        cookie = request.COOKIES["tags"]
+        tags = [i for i in str(cookie).replace("[", "").replace("]", "").split(',')]
+        products = []
+        for product in ProductModel.objects.all().iterator():
+            for tag in tags:
+                print(tag.encode("utf-8").decode("utf-8"), tag.encode("utf-8"), product.tags, tag.encode("utf-8").decode("utf-8") in product.tags)
+                if tag.encode("utf-8").decode("utf-8") in product.tags:
+                    products.append(product.id)
+                else:
+                    return render(request, "goods.html")
+        for id_p in products:
+            object = ProductModel.objects.all().filter(id=id_p)
+            return render(request, "goods.html", {"products": object})
+        return render(request, "goods.html")
     return render(request, "goods.html")
 
 
@@ -64,6 +90,20 @@ def basket_delete(request):
         return HttpResponse(status=400)
     else:
         return HttpResponse(status=409)
+    
+
+def tags_cookie(request):
+    if "username" in request.session:
+        if request.method == "POST":
+            tags = request.POST.get("tags")
+            str_tags = str(tags).replace("{", "").replace("}", "")
+            split_tags = str_tags.strip().split(",")
+            byte_tags = [i.encode('utf-8') for i in split_tags]
+            resp = HttpResponse()
+            resp.set_cookie("tags", byte_tags)
+            return resp
+        return redirect("/main")
+    return redirect("/main")
 
 
 def company(request):
